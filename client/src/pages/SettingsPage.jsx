@@ -21,20 +21,27 @@ function ToggleButton({ checked, onToggle }) {
 
 function SettingsPage() {
   const [settings, setSettings] = useState(null);
+  const [projects, setProjects] = useState([]);
   const [saving, setSaving] = useState(false);
   const [testResult, setTestResult] = useState(null);
   const [lastCheckTime, setLastCheckTime] = useState(null);
   const [checking, setChecking] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [copiedKey, setCopiedKey] = useState(null);
 
   useEffect(() => {
-    async function loadSettings() {
-      const response = await fetch('/api/settings');
-      const data = await response.json();
-      setSettings(data);
+    async function loadPageData() {
+      const [settingsResponse, projectsResponse] = await Promise.all([
+        fetch('/api/settings'),
+        fetch('/api/projects')
+      ]);
+      const settingsData = await settingsResponse.json();
+      const projectsData = await projectsResponse.json();
+
+      setSettings(settingsData);
+      setProjects(Array.isArray(projectsData) ? projectsData : []);
     }
 
-    loadSettings();
+    loadPageData();
   }, []);
 
   useEffect(() => {
@@ -52,18 +59,18 @@ function SettingsPage() {
   }, [testResult]);
 
   useEffect(() => {
-    if (!copied) {
+    if (!copiedKey) {
       return undefined;
     }
 
     const timeoutId = window.setTimeout(() => {
-      setCopied(false);
+      setCopiedKey(null);
     }, 1000);
 
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [copied]);
+  }, [copiedKey]);
 
   async function persistSettings(nextSettings, showSaving = false) {
     if (showSaving) {
@@ -166,7 +173,12 @@ function SettingsPage() {
 
   async function handleCopy() {
     await navigator.clipboard.writeText(`${window.location.origin}/api/heartbeat`);
-    setCopied(true);
+    setCopiedKey('heartbeat-url');
+  }
+
+  async function handleProjectUuidCopy(projectId) {
+    await navigator.clipboard.writeText(projectId);
+    setCopiedKey(`project-${projectId}`);
   }
 
   if (!settings) {
@@ -195,7 +207,9 @@ function SettingsPage() {
         </div>
 
         <div className="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-sm dark:border-dark-border dark:bg-dark-card">
-          <h2 className="text-xl font-semibold text-slate-900 dark:text-dark-text">Telegram 알림 설정</h2>
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-dark-text">
+            Telegram 알림 설정
+          </h2>
           <div className="mt-5 grid gap-4 md:grid-cols-2">
             <label className="space-y-2 md:col-span-2">
               <span className="text-sm font-medium text-slate-700 dark:text-dark-text">Bot Token</span>
@@ -347,8 +361,8 @@ function SettingsPage() {
                 onClick={handleCopy}
                 className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-white dark:border-dark-border dark:text-dark-text dark:hover:bg-slate-900"
               >
-                {copied ? <FiCheck /> : <FiCopy />}
-                {copied ? '복사됨' : '복사'}
+                {copiedKey === 'heartbeat-url' ? <FiCheck /> : <FiCopy />}
+                {copiedKey === 'heartbeat-url' ? '복사됨' : '복사'}
               </button>
             </div>
           </div>
@@ -359,6 +373,47 @@ function SettingsPage() {
   "job": "job이름",
   "status": "success"
 }`}</pre>
+          </div>
+
+          <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-dark-border dark:bg-slate-950/50">
+            <div className="flex items-center justify-between gap-3">
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-dark-text">
+                Project UUID List
+              </h3>
+              <span className="text-xs text-slate-400 dark:text-slate-500">
+                UUID를 클릭하면 자동 복사됩니다.
+              </span>
+            </div>
+
+            <div className="mt-3 space-y-2">
+              {projects.length ? (
+                projects.map((project) => (
+                  <button
+                    key={project.id}
+                    type="button"
+                    onClick={() => handleProjectUuidCopy(project.id)}
+                    className="flex w-full items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-3 py-3 text-left transition hover:border-blue-400 hover:bg-blue-50/40 dark:border-dark-border dark:bg-slate-900 dark:hover:bg-slate-900"
+                  >
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-slate-900 dark:text-dark-text">
+                        {project.name}
+                      </p>
+                      <p className="mt-1 truncate font-mono text-xs text-slate-500 dark:text-dark-muted">
+                        {project.id}
+                      </p>
+                    </div>
+                    <span className="inline-flex shrink-0 items-center gap-2 text-xs font-semibold text-slate-500 dark:text-dark-muted">
+                      {copiedKey === `project-${project.id}` ? <FiCheck /> : <FiCopy />}
+                      {copiedKey === `project-${project.id}` ? '복사됨' : 'UUID 복사'}
+                    </span>
+                  </button>
+                ))
+              ) : (
+                <p className="text-sm text-slate-500 dark:text-dark-muted">
+                  등록된 프로젝트가 없어서 UUID를 표시할 수 없습니다.
+                </p>
+              )}
+            </div>
           </div>
 
           <p className="mt-4 text-xs text-slate-400 dark:text-slate-500">대시보드 버전: v1.0.0</p>

@@ -79,3 +79,12 @@
 
 ### Next
 - 실제 브라우저에서 Projects 링크 접근성과 테이블 가독성 최종 확인
+## Additional Settings UUID Copy
+- 구현 완료: Settings 페이지의 API 정보 패널 하단에 프로젝트별 UUID 목록 추가
+- 구현 완료: 각 UUID 행 클릭 시 클립보드에 자동 복사되도록 처리
+- 구현 완료: heartbeat URL 복사 상태와 UUID 복사 상태를 각각 구분해서 표시
+- 구현 완료: Settings 진입 시 `/api/settings` 와 `/api/projects` 를 함께 불러오도록 조정
+- 검증 완료: `client`에서 `npm.cmd run build` 통과
+
+### Next
+- 실제 브라우저에서 UUID 클릭 복사 UX와 긴 UUID 표시 길이 최종 확인
