@@ -19,6 +19,31 @@ function ToggleButton({ checked, onToggle }) {
   );
 }
 
+async function copyText(value) {
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(value);
+    return;
+  }
+
+  const textArea = document.createElement('textarea');
+  textArea.value = value;
+  textArea.setAttribute('readonly', '');
+  textArea.style.position = 'fixed';
+  textArea.style.top = '-9999px';
+  textArea.style.left = '-9999px';
+
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+
+  const copied = document.execCommand('copy');
+  document.body.removeChild(textArea);
+
+  if (!copied) {
+    throw new Error('Copy failed');
+  }
+}
+
 function SettingsPage() {
   const [settings, setSettings] = useState(null);
   const [projects, setProjects] = useState([]);
@@ -172,12 +197,12 @@ function SettingsPage() {
   }
 
   async function handleCopy() {
-    await navigator.clipboard.writeText(`${window.location.origin}/api/heartbeat`);
+    await copyText(`${window.location.origin}/api/heartbeat`);
     setCopiedKey('heartbeat-url');
   }
 
   async function handleProjectUuidCopy(projectId) {
-    await navigator.clipboard.writeText(projectId);
+    await copyText(projectId);
     setCopiedKey(`project-${projectId}`);
   }
 

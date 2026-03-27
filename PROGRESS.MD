@@ -88,3 +88,13 @@
 
 ### Next
 - 실제 브라우저에서 UUID 클릭 복사 UX와 긴 UUID 표시 길이 최종 확인
+
+## Additional Settings Copy Reliability
+- 수정 완료: Settings 페이지의 UUID 복사와 heartbeat URL 복사에 공통 `copyText` 헬퍼 추가
+- 수정 완료: `https` 또는 `localhost` 에서 가능한 `navigator.clipboard` 우선 사용
+- 수정 완료: `http://IP주소` 환경에서는 `textarea + execCommand('copy')` fallback으로 자동 복사 지원
+- 원인 정리: 브라우저의 Clipboard API는 보안 컨텍스트가 아닌 일반 HTTP IP 접속에서 막힐 수 있음
+- 검증 완료: `client`에서 `npm.cmd run build` 통과
+
+### Next
+- 실제 서버 주소에서 UUID 클릭 후 붙여넣기까지 브라우저 최종 확인
