@@ -51,14 +51,28 @@ function Sidebar() {
       </div>
 
       <div className="flex-1 overflow-auto">
-        <button
-          type="button"
-          onClick={() => setIsProjectsOpen((current) => !current)}
-          className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:text-dark-text dark:hover:bg-slate-800/70"
-        >
-          <span>Projects</span>
-          {isProjectsOpen ? <FiChevronDown /> : <FiChevronRight />}
-        </button>
+        <div className="flex items-center gap-2">
+          <NavLink
+            to="/projects"
+            className={({ isActive }) =>
+              `flex-1 rounded-xl px-3 py-2 text-left text-sm font-semibold transition ${
+                isActive
+                  ? 'bg-blue-600 text-white'
+                  : 'text-slate-700 hover:bg-slate-100 dark:text-dark-text dark:hover:bg-slate-800/70'
+              }`
+            }
+          >
+            <span>Projects</span>
+          </NavLink>
+          <button
+            type="button"
+            onClick={() => setIsProjectsOpen((current) => !current)}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-slate-700 transition hover:bg-slate-100 dark:text-dark-text dark:hover:bg-slate-800/70"
+            aria-label={isProjectsOpen ? 'Collapse projects list' : 'Expand projects list'}
+          >
+            {isProjectsOpen ? <FiChevronDown /> : <FiChevronRight />}
+          </button>
+        </div>
 
         {isProjectsOpen ? (
           <div className="mt-2 space-y-1">

@@ -9,25 +9,28 @@ function ProjectRow({ project, isExpanded, onToggle, onEdit, onDelete, formatTim
         isExpanded ? 'bg-slate-50 dark:bg-slate-800/40' : ''
       }`}
     >
-      <td className="w-12 px-4 py-4 text-center text-sm text-slate-600 dark:text-dark-muted">
+      <td className="w-12 px-3 py-4 text-center text-sm text-slate-600 dark:text-dark-muted">
         {project.no}
       </td>
-      <td className="px-4 py-4 text-sm font-medium text-slate-900 dark:text-dark-text">
-        {project.name || 'Untitled Project'}
+      <td
+        className="w-64 px-3 py-4 text-sm font-medium text-slate-900 dark:text-dark-text"
+        title={project.name || 'Untitled Project'}
+      >
+        <div className="truncate">{project.name || 'Untitled Project'}</div>
       </td>
-      <td className="w-20 px-4 py-4 text-center">
+      <td className="w-20 px-3 py-4 text-center">
         <StatusLight status={project.status?.server || 'na'} />
       </td>
-      <td className="w-24 px-4 py-4 text-center">
+      <td className="w-20 px-3 py-4 text-center">
         <StatusLight status={project.hasSchedule ? project.status?.schedule || 'yellow' : 'na'} />
       </td>
-      <td className="w-16 px-4 py-4 text-center">
+      <td className="w-16 px-3 py-4 text-center">
         <StatusLight status={project.hasDb ? project.status?.db || 'yellow' : 'na'} />
       </td>
-      <td className="w-44 px-4 py-4 text-center text-sm text-slate-600 dark:text-dark-muted">
+      <td className="w-40 px-3 py-4 text-center text-sm text-slate-600 dark:text-dark-muted">
         {formatTimestamp(project.status?.lastUpdated)}
       </td>
-      <td className="w-16 px-4 py-4 text-center">
+      <td className="w-14 px-3 py-4 text-center">
         <button
           type="button"
           onClick={(event) => {
@@ -40,7 +43,7 @@ function ProjectRow({ project, isExpanded, onToggle, onEdit, onDelete, formatTim
           <FiEdit2 />
         </button>
       </td>
-      <td className="w-16 px-4 py-4 text-center">
+      <td className="w-14 px-3 py-4 text-center">
         <button
           type="button"
           onClick={(event) => {

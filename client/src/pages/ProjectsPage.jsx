@@ -129,14 +129,14 @@ function ProjectsPage() {
             <table className="min-w-full table-fixed">
               <thead className="bg-slate-100 text-left dark:bg-slate-950/60">
                 <tr className="text-sm font-semibold text-slate-700 dark:text-dark-text">
-                  <th className="w-12 px-4 py-4 text-center">No.</th>
-                  <th className="px-4 py-4">Project Name</th>
-                  <th className="w-20 px-4 py-4 text-center">Server</th>
-                  <th className="w-24 px-4 py-4 text-center">Schedule</th>
-                  <th className="w-16 px-4 py-4 text-center">DB</th>
-                  <th className="w-44 px-4 py-4 text-center">Latest Update</th>
-                  <th className="w-16 px-4 py-4 text-center">Edit</th>
-                  <th className="w-16 px-4 py-4 text-center">Delete</th>
+                  <th className="w-12 px-3 py-4 text-center">No.</th>
+                  <th className="w-64 px-3 py-4">Project Name</th>
+                  <th className="w-20 px-3 py-4 text-center">Server</th>
+                  <th className="w-20 px-3 py-4 text-center">Schedule</th>
+                  <th className="w-16 px-3 py-4 text-center">DB</th>
+                  <th className="w-40 px-3 py-4 text-center">Latest Update</th>
+                  <th className="w-14 px-3 py-4 text-center">Edit</th>
+                  <th className="w-14 px-3 py-4 text-center">Delete</th>
                 </tr>
               </thead>
               <tbody>

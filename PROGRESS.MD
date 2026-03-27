@@ -69,3 +69,13 @@
 ### Final Status
 - 전체 Phase 구현 및 검증 완료
 - 로컬 기준 배포 전 준비 상태 확보
+
+## Additional UI Refinement
+- 수정 완료: 사이드바 `Projects`를 실제 페이지 이동 링크로 분리
+- 수정 완료: chevron 버튼은 접기/펼치기 전용으로 유지
+- 수정 완료: Projects 테이블 컬럼 폭과 셀 패딩 축소
+- 수정 완료: `Project Name` 셀 고정 폭 + `truncate` 적용
+- 검증 완료: `client`에서 `npm.cmd run build` 통과
+
+### Next
+- 실제 브라우저에서 Projects 링크 접근성과 테이블 가독성 최종 확인
