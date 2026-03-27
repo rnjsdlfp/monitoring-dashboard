@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Build output
+client/dist/
+
+# Runtime data
+server/data/projects.json
+server/data/heartbeats.json
+server/data/settings.json
+server/data/eventLog.json
+
+# Environment files
+.env
+.env.local
+
+# Generated artifacts
+.playwright-cli/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
