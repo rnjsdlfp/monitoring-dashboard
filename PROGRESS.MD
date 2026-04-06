@@ -1,100 +1,71 @@
 # Progress Log
 
-## Phase 0
-- 확인 완료: `node --version` = `v22.15.0`, `npm --version` = `10.9.2`
-- 확인 결과: `pm2`는 현재 로컬 PC에 설치되어 있지 않음
-- 판단: `pm2`는 배포용 프로세스 관리자이므로 현재 개발 진행에는 비차단 이슈
+## Summary
+- The dashboard started as a monitoring board for `Server / Schedule / DB` health.
+- In this change, that health-check architecture was removed completely.
+- The product is now a simpler project directory that stores and shows basic project information only.
+
+## Phase 12 - Backend Simplification
+- Removed outbound health-check behavior from [server/app.js](C:\Users\JIREH\app\project-dashboard\server\app.js).
+- Removed the manual monitor endpoint and the heartbeat route connection.
+- Simplified [server/routes/projects.js](C:\Users\JIREH\app\project-dashboard\server\routes\projects.js) so projects only save:
+  - `name`
+  - `description`
+  - `outputFormat`
+  - `serverLocation`
+  - `url`
+  - `techStack`
+- Simplified [server/lib/dataStore.js](C:\Users\JIREH\app\project-dashboard\server\lib\dataStore.js) so project reads/writes strip old status fields.
+- Deleted orphaned monitor-related files:
+  - `server/routes/heartbeat.js`
+  - `server/services/monitorService.js`
+  - `server/services/dailyReportService.js`
+
+### Success
+- The server no longer contains live project monitoring flow.
+- No backend route now sends requests to project URLs or health endpoints.
 
 ### Next
-- `server/` 기본 구조와 초기 데이터 파일 생성
-- Express 서버가 에러 없이 기동하는지 확인
+- Update the project form and Projects table to match the simpler data model.
 
-## Phase 1
-- 생성 완료: `server/package.json`
-- 생성 완료: `server/app.js`
-- 생성 완료: `server/routes/*.js` 최소 라우트
-- 생성 완료: `server/services/*.js` 최소 서비스
-- 생성 완료: `server/data/*.json` 초기 파일
-- 설치 완료: `server` 의존성 `npm.cmd install`
-- 검증 완료: 서버 실행 후 `GET http://127.0.0.1:4000/api/projects` 응답 코드 `200`
+## Phase 13 - Frontend Simplification
+- Simplified [AddEditModal.jsx](C:\Users\JIREH\app\project-dashboard\client\src\components\AddEditModal.jsx) to remove:
+  - `Health Endpoint`
+  - `Has Schedule`
+  - `Has DB`
+  - `Schedule Interval`
+- Updated [ProjectsPage.jsx](C:\Users\JIREH\app\project-dashboard\client\src\pages\ProjectsPage.jsx) table columns.
+- Updated [ProjectRow.jsx](C:\Users\JIREH\app\project-dashboard\client\src\components\ProjectRow.jsx) to display:
+  - `Server Location`
+  - `URL`
+- Rebuilt [ProjectAccordion.jsx](C:\Users\JIREH\app\project-dashboard\client\src\components\ProjectAccordion.jsx) with the simplified detail view.
+- Removed the unused [StatusLight.jsx](C:\Users\JIREH\app\project-dashboard\client\src\components\StatusLight.jsx) component.
+- Simplified [SettingsPage.jsx](C:\Users\JIREH\app\project-dashboard\client\src\pages\SettingsPage.jsx) so it only manages Telegram connection settings.
 
-### Next
-- Projects CRUD API 구현
-- Heartbeat API 구현
-- 이후 모니터링/알림 서비스와 연결
-
-## Phase 2, 3, 3-A, 3-B, 3-C
-- 구현 완료: Projects CRUD API
-- 구현 완료: Heartbeat 저장 및 Schedule 상태 반영
-- 구현 완료: Settings 조회/저장/Telegram 테스트 API
-- 구현 완료: 서버/DB/Schedule 모니터링 서비스
-- 구현 완료: 이벤트 로그 기록 및 즉시 알림 연동
-- 구현 완료: Daily Report 서비스 뼈대 및 발송 조건 처리
-- 추가 완료: 공통 JSON 데이터 저장 유틸리티, KST 시간 유틸리티
-- 검증 완료: 프로젝트 생성 → 수정 → heartbeat → settings 저장 → monitor 실행 → 삭제 전체 흐름 통과
-- 검증 완료: 빈 Telegram 설정으로 테스트 발송 시 `400` 반환
+### Success
+- The Projects screen no longer shows `Server / Schedule / DB / Latest Update`.
+- The table now shows `Server Location` and `URL`.
+- The add/edit modal only asks for current project information.
 
 ### Next
-- `client/` Vite + React + Tailwind 초기 세팅
-- 테마 컨텍스트, 라우팅, 사이드바, 상태등 공통 UI 구현
+- Verify the simplified code path with build and syntax checks.
+- Rewrite the handoff document so it explains the new, simpler architecture.
 
-## Phase 4, 5, 6
-- 생성 완료: `client/` Vite + React 기본 구조
-- 생성 완료: Tailwind CSS, Vite proxy, Inter 폰트 설정
-- 구현 완료: ThemeContext, App 레이아웃, Sidebar, ThemeToggle
-- 구현 완료: StatusLight 공통 컴포넌트
-- 검증 완료: `client`에서 `npm.cmd run build` 통과
+## Phase 14 - Verification And Documentation
+- Verified frontend production build with:
+  - `npm.cmd run build`
+- Verified server file syntax with:
+  - `node --check server\\app.js`
+  - `node --check server\\routes\\projects.js`
+  - `node --check server\\routes\\settings.js`
+  - `node --check server\\lib\\dataStore.js`
+  - `node --check server\\services\\telegramService.js`
+- Rewrote [FORCodex.md](C:\Users\JIREH\app\project-dashboard\FORCodex.md) to explain the current architecture in plain language.
 
-### Next
-- Projects 표, 아코디언, 모달 구현
-- Settings 화면과 실제 API 연동 구현
-
-## Phase 7, 8, 9
-- 구현 완료: Projects 표, 추가/수정 모달, 상세 아코디언
-- 구현 완료: 프로젝트 추가/수정/삭제 후 사이드바 즉시 갱신
-- 구현 완료: Settings 화면, Telegram 저장/테스트, Reporting 토글, 수동 체크, API 안내
-- 검증 완료: 브라우저 자동화로 프로젝트 추가, Settings 이동, Daily Report 토글, 수동 체크 확인
-
-### Next
-- `.gitignore` 추가
-- 프로젝트 설명 문서 작성
-- 최종 스모크 테스트 및 데이터 정리
-
-## Phase 10, 11
-- 생성 완료: `.gitignore`
-- 작성 완료: `FORCodex.md`
-- 정리 완료: 테스트용 `server/data/*.json` 초기화
-- 검증 완료: 백엔드 API 흐름, 프론트엔드 빌드, 브라우저 핵심 흐름 테스트 통과
-
-### Final Status
-- 전체 Phase 구현 및 검증 완료
-- 로컬 기준 배포 전 준비 상태 확보
-
-## Additional UI Refinement
-- 수정 완료: 사이드바 `Projects`를 실제 페이지 이동 링크로 분리
-- 수정 완료: chevron 버튼은 접기/펼치기 전용으로 유지
-- 수정 완료: Projects 테이블 컬럼 폭과 셀 패딩 축소
-- 수정 완료: `Project Name` 셀 고정 폭 + `truncate` 적용
-- 검증 완료: `client`에서 `npm.cmd run build` 통과
+### Success
+- Frontend build passes.
+- Server entry files pass syntax validation.
+- The project explanation now matches the current implementation.
 
 ### Next
-- 실제 브라우저에서 Projects 링크 접근성과 테이블 가독성 최종 확인
-## Additional Settings UUID Copy
-- 구현 완료: Settings 페이지의 API 정보 패널 하단에 프로젝트별 UUID 목록 추가
-- 구현 완료: 각 UUID 행 클릭 시 클립보드에 자동 복사되도록 처리
-- 구현 완료: heartbeat URL 복사 상태와 UUID 복사 상태를 각각 구분해서 표시
-- 구현 완료: Settings 진입 시 `/api/settings` 와 `/api/projects` 를 함께 불러오도록 조정
-- 검증 완료: `client`에서 `npm.cmd run build` 통과
-
-### Next
-- 실제 브라우저에서 UUID 클릭 복사 UX와 긴 UUID 표시 길이 최종 확인
-
-## Additional Settings Copy Reliability
-- 수정 완료: Settings 페이지의 UUID 복사와 heartbeat URL 복사에 공통 `copyText` 헬퍼 추가
-- 수정 완료: `https` 또는 `localhost` 에서 가능한 `navigator.clipboard` 우선 사용
-- 수정 완료: `http://IP주소` 환경에서는 `textarea + execCommand('copy')` fallback으로 자동 복사 지원
-- 원인 정리: 브라우저의 Clipboard API는 보안 컨텍스트가 아닌 일반 HTTP IP 접속에서 막힐 수 있음
-- 검증 완료: `client`에서 `npm.cmd run build` 통과
-
-### Next
-- 실제 서버 주소에서 UUID 클릭 후 붙여넣기까지 브라우저 최종 확인
+- If needed later, clean or archive legacy planning documents such as `PLAN.md` and `MONITORINGMETHOD.md` so they do not describe removed features.

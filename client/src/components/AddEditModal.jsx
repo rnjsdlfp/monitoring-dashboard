@@ -7,10 +7,6 @@ const emptyForm = {
   outputFormat: '',
   serverLocation: '',
   url: '',
-  healthEndpoint: '',
-  hasSchedule: false,
-  scheduleIntervalHours: 24,
-  hasDb: false,
   techStack: []
 };
 
@@ -25,10 +21,6 @@ function normalizeProject(project) {
     outputFormat: project.outputFormat || '',
     serverLocation: project.serverLocation || '',
     url: project.url || '',
-    healthEndpoint: project.healthEndpoint || '',
-    hasSchedule: Boolean(project.hasSchedule),
-    scheduleIntervalHours: Number(project.scheduleIntervalHours || 24),
-    hasDb: Boolean(project.hasDb),
     techStack: Array.isArray(project.techStack) ? project.techStack : []
   };
 }
@@ -102,7 +94,7 @@ function AddEditModal({ isOpen, onClose, onSave, project }) {
               {project ? 'Project 수정' : '새로운 Project 추가'}
             </h2>
             <p className="mt-1 text-sm text-slate-500 dark:text-dark-muted">
-              필요한 항목만 입력하면 됩니다. 모든 필드는 선택 사항입니다.
+              지금 화면에서는 프로젝트 기본 정보만 입력합니다.
             </p>
           </div>
           <button
@@ -169,57 +161,6 @@ function AddEditModal({ isOpen, onClose, onSave, project }) {
             </label>
 
             <label className="space-y-2 md:col-span-2">
-              <span className="text-sm font-medium text-slate-700 dark:text-dark-text">Health Endpoint</span>
-              <input
-                className={inputClassName}
-                value={form.healthEndpoint}
-                onChange={(event) =>
-                  setForm((current) => ({ ...current, healthEndpoint: event.target.value }))
-                }
-              />
-            </label>
-
-            <label className="flex items-center gap-3 rounded-2xl border border-slate-200 px-4 py-3 dark:border-dark-border">
-              <input
-                type="checkbox"
-                checked={form.hasSchedule}
-                onChange={(event) =>
-                  setForm((current) => ({ ...current, hasSchedule: event.target.checked }))
-                }
-              />
-              <span className="text-sm font-medium text-slate-700 dark:text-dark-text">Has Schedule</span>
-            </label>
-
-            <label className="flex items-center gap-3 rounded-2xl border border-slate-200 px-4 py-3 dark:border-dark-border">
-              <input
-                type="checkbox"
-                checked={form.hasDb}
-                onChange={(event) => setForm((current) => ({ ...current, hasDb: event.target.checked }))}
-              />
-              <span className="text-sm font-medium text-slate-700 dark:text-dark-text">Has DB</span>
-            </label>
-
-            {form.hasSchedule ? (
-              <label className="space-y-2">
-                <span className="text-sm font-medium text-slate-700 dark:text-dark-text">
-                  Schedule Interval (hours)
-                </span>
-                <input
-                  type="number"
-                  min="1"
-                  className={inputClassName}
-                  value={form.scheduleIntervalHours}
-                  onChange={(event) =>
-                    setForm((current) => ({
-                      ...current,
-                      scheduleIntervalHours: Number(event.target.value || 24)
-                    }))
-                  }
-                />
-              </label>
-            ) : null}
-
-            <label className="space-y-2 md:col-span-2">
               <span className="text-sm font-medium text-slate-700 dark:text-dark-text">Tech Stack</span>
               <div className="rounded-2xl border border-slate-200 px-4 py-3 dark:border-dark-border">
                 <div className="mb-3 flex flex-wrap gap-2">
@@ -230,7 +171,7 @@ function AddEditModal({ isOpen, onClose, onSave, project }) {
                       onClick={() => removeTag(tag)}
                       className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 transition hover:bg-blue-100 dark:bg-blue-500/10 dark:text-blue-300"
                     >
-                      {tag} ×
+                      {tag} x
                     </button>
                   ))}
                 </div>

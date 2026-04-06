@@ -4,9 +4,7 @@ const path = require('path');
 const dataDir = path.join(__dirname, '../data');
 const files = {
   projects: path.join(dataDir, 'projects.json'),
-  heartbeats: path.join(dataDir, 'heartbeats.json'),
-  settings: path.join(dataDir, 'settings.json'),
-  eventLog: path.join(dataDir, 'eventLog.json')
+  settings: path.join(dataDir, 'settings.json')
 };
 
 const defaultSettings = {
@@ -16,6 +14,20 @@ const defaultSettings = {
     dailyReport: { enabled: false, sendHourKST: 9 }
   }
 };
+
+function sanitizeProject(project = {}, index = 0) {
+  return {
+    id: project.id || '',
+    no: Number(project.no) || index + 1,
+    name: project.name || '',
+    description: project.description || '',
+    outputFormat: project.outputFormat || '',
+    serverLocation: project.serverLocation || '',
+    url: project.url || '',
+    techStack: Array.isArray(project.techStack) ? project.techStack : [],
+    createdAt: project.createdAt || ''
+  };
+}
 
 function normalizeHour(value) {
   const hour = Number(value);
@@ -72,22 +84,15 @@ function readProjects() {
 
   return projects
     .slice()
-    .sort((left, right) => (left.no || 0) - (right.no || 0));
+    .sort((left, right) => (left.no || 0) - (right.no || 0))
+    .map((project, index) => sanitizeProject(project, index));
 }
 
 function writeProjects(projects) {
-  writeJson(files.projects, projects);
-}
-
-function readHeartbeats() {
-  const heartbeats = readJson(files.heartbeats, {});
-  return heartbeats && typeof heartbeats === 'object' && !Array.isArray(heartbeats)
-    ? heartbeats
-    : {};
-}
-
-function writeHeartbeats(heartbeats) {
-  writeJson(files.heartbeats, heartbeats);
+  const normalizedProjects = Array.isArray(projects)
+    ? projects.map((project, index) => sanitizeProject(project, index))
+    : [];
+  writeJson(files.projects, normalizedProjects);
 }
 
 function readSettings() {
@@ -127,36 +132,11 @@ function writeSettings(settings) {
   });
 }
 
-function readEventLog() {
-  const events = readJson(files.eventLog, []);
-  return Array.isArray(events) ? events : [];
-}
-
-function writeEventLog(events) {
-  writeJson(files.eventLog, events);
-}
-
-function appendEventLog(entry) {
-  const events = readEventLog();
-  events.push(entry);
-
-  while (events.length > 1000) {
-    events.shift();
-  }
-
-  writeEventLog(events);
-}
-
 module.exports = {
   files,
   defaultSettings,
   readProjects,
   writeProjects,
-  readHeartbeats,
-  writeHeartbeats,
   readSettings,
-  writeSettings,
-  readEventLog,
-  writeEventLog,
-  appendEventLog
+  writeSettings
 };

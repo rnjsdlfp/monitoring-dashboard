@@ -1,13 +1,13 @@
 function ProjectAccordion({ project, isOpen }) {
   const fields = [
-    { label: 'Project Description', value: project.description || '설명이 없습니다.' },
-    { label: 'Output Format', value: project.outputFormat || '미입력' },
-    { label: 'Server Location', value: project.serverLocation || '미입력' }
+    { label: 'Project Description', value: project.description || 'No description' },
+    { label: 'Output Format', value: project.outputFormat || 'Not set' },
+    { label: 'Server Location', value: project.serverLocation || 'Not set' }
   ];
 
   return (
     <tr className="border-b border-slate-200 dark:border-dark-border">
-      <td colSpan={8} className="p-0">
+      <td colSpan={6} className="p-0">
         <div
           className={`overflow-hidden transition-all duration-300 ${
             isOpen ? 'max-h-[420px] opacity-100' : 'max-h-0 opacity-0'
@@ -16,7 +16,10 @@ function ProjectAccordion({ project, isOpen }) {
           <div className="bg-slate-100/80 px-6 py-5 dark:bg-slate-950/40">
             <div className="grid gap-4 md:grid-cols-2">
               {fields.map((field) => (
-                <div key={field.label} className="rounded-2xl bg-white/90 p-4 shadow-sm dark:bg-slate-900/70">
+                <div
+                  key={field.label}
+                  className="rounded-2xl bg-white/90 p-4 shadow-sm dark:bg-slate-900/70"
+                >
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
                     {field.label}
                   </p>
@@ -38,7 +41,7 @@ function ProjectAccordion({ project, isOpen }) {
                     {project.url}
                   </a>
                 ) : (
-                  <p className="mt-2 text-sm text-slate-700 dark:text-dark-text">미입력</p>
+                  <p className="mt-2 text-sm text-slate-700 dark:text-dark-text">Not set</p>
                 )}
               </div>
 
@@ -57,7 +60,7 @@ function ProjectAccordion({ project, isOpen }) {
                       </span>
                     ))
                   ) : (
-                    <p className="text-sm text-slate-700 dark:text-dark-text">미입력</p>
+                    <p className="text-sm text-slate-700 dark:text-dark-text">Not set</p>
                   )}
                 </div>
               </div>

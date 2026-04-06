@@ -3,27 +3,6 @@ import AddEditModal from '../components/AddEditModal';
 import ProjectAccordion from '../components/ProjectAccordion';
 import ProjectRow from '../components/ProjectRow';
 
-function formatTimestamp(value) {
-  if (!value) {
-    return '-';
-  }
-
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return '-';
-  }
-
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const seconds = String(date.getSeconds()).padStart(2, '0');
-
-  return `${year}.${month}.${day} ${hours}:${minutes}:${seconds}`;
-}
-
 function ProjectsPage() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -109,7 +88,7 @@ function ProjectsPage() {
               Projects
             </h1>
             <p className="mt-2 text-sm text-slate-600 dark:text-dark-muted">
-              프로젝트 상태를 표로 보고, 펼쳐서 세부 정보까지 확인할 수 있습니다.
+              프로젝트의 기본 운영 정보를 한눈에 보고, 상세 정보까지 펼쳐서 확인할 수 있습니다.
             </p>
           </div>
           <button
@@ -131,10 +110,8 @@ function ProjectsPage() {
                 <tr className="text-sm font-semibold text-slate-700 dark:text-dark-text">
                   <th className="w-12 px-3 py-4 text-center">No.</th>
                   <th className="w-64 px-3 py-4">Project Name</th>
-                  <th className="w-20 px-3 py-4 text-center">Server</th>
-                  <th className="w-20 px-3 py-4 text-center">Schedule</th>
-                  <th className="w-16 px-3 py-4 text-center">DB</th>
-                  <th className="w-40 px-3 py-4 text-center">Latest Update</th>
+                  <th className="w-56 px-3 py-4">Server Location</th>
+                  <th className="px-3 py-4">URL</th>
                   <th className="w-14 px-3 py-4 text-center">Edit</th>
                   <th className="w-14 px-3 py-4 text-center">Delete</th>
                 </tr>
@@ -143,7 +120,7 @@ function ProjectsPage() {
                 {loading ? (
                   <tr>
                     <td
-                      colSpan={8}
+                      colSpan={6}
                       className="px-6 py-10 text-center text-sm text-slate-500 dark:text-dark-muted"
                     >
                       프로젝트 목록을 불러오는 중입니다...
@@ -154,7 +131,7 @@ function ProjectsPage() {
                 {!loading && !projects.length ? (
                   <tr>
                     <td
-                      colSpan={8}
+                      colSpan={6}
                       className="px-6 py-10 text-center text-sm text-slate-500 dark:text-dark-muted"
                     >
                       아직 등록된 프로젝트가 없습니다.
@@ -174,7 +151,6 @@ function ProjectsPage() {
                             setShowModal(true);
                           }}
                           onDelete={handleDeleteProject}
-                          formatTimestamp={formatTimestamp}
                         />
                         <ProjectAccordion project={project} isOpen={expandedRow === project.id} />
                       </Fragment>
