@@ -11,6 +11,7 @@ function normalizeProjectInput(body = {}) {
     outputFormat: body.outputFormat || '',
     serverLocation: body.serverLocation || '',
     url: body.url || '',
+    adminUrl: body.adminUrl || '',
     techStack: Array.isArray(body.techStack) ? body.techStack : []
   };
 }

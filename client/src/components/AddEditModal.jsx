@@ -7,6 +7,7 @@ const emptyForm = {
   outputFormat: '',
   serverLocation: '',
   url: '',
+  adminUrl: '',
   techStack: []
 };
 
@@ -21,6 +22,7 @@ function normalizeProject(project) {
     outputFormat: project.outputFormat || '',
     serverLocation: project.serverLocation || '',
     url: project.url || '',
+    adminUrl: project.adminUrl || '',
     techStack: Array.isArray(project.techStack) ? project.techStack : []
   };
 }
@@ -157,6 +159,19 @@ function AddEditModal({ isOpen, onClose, onSave, project }) {
                 className={inputClassName}
                 value={form.url}
                 onChange={(event) => setForm((current) => ({ ...current, url: event.target.value }))}
+              />
+            </label>
+
+            <label className="space-y-2 md:col-span-2">
+              <span className="text-sm font-medium text-slate-700 dark:text-dark-text">
+                URL(Admin)
+              </span>
+              <input
+                className={inputClassName}
+                value={form.adminUrl}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, adminUrl: event.target.value }))
+                }
               />
             </label>
 

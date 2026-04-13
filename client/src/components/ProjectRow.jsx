@@ -39,6 +39,22 @@ function ProjectRow({ project, isExpanded, onToggle, onEdit, onDelete }) {
           <span>-</span>
         )}
       </td>
+      <td className="px-3 py-4 text-sm text-slate-600 dark:text-dark-muted">
+        {project.adminUrl ? (
+          <a
+            href={project.adminUrl}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(event) => event.stopPropagation()}
+            className="block truncate text-blue-600 underline decoration-transparent transition hover:decoration-current dark:text-blue-300"
+            title={project.adminUrl}
+          >
+            {project.adminUrl}
+          </a>
+        ) : (
+          <span>-</span>
+        )}
+      </td>
       <td className="w-14 px-3 py-4 text-center">
         <button
           type="button"

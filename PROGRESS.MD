@@ -69,3 +69,36 @@
 
 ### Next
 - If needed later, clean or archive legacy planning documents such as `PLAN.md` and `MONITORINGMETHOD.md` so they do not describe removed features.
+
+## Phase 15 - Admin URL Support
+- Added `adminUrl` to [server/routes/projects.js](C:\Users\JIREH\app\project-dashboard\server\routes\projects.js) so create and update requests save the new field.
+- Added `adminUrl` to [server/lib/dataStore.js](C:\Users\JIREH\app\project-dashboard\server\lib\dataStore.js) so project normalization keeps the value instead of stripping it out.
+- Updated [AddEditModal.jsx](C:\Users\JIREH\app\project-dashboard\client\src\components\AddEditModal.jsx) to include a new `URL(Admin)` input for both add and edit flows.
+- Updated [ProjectsPage.jsx](C:\Users\JIREH\app\project-dashboard\client\src\pages\ProjectsPage.jsx) so the Projects table now shows `URL(Admin)` between `URL` and `Edit`.
+- Updated [ProjectRow.jsx](C:\Users\JIREH\app\project-dashboard\client\src\components\ProjectRow.jsx) so each row renders the admin link.
+- Updated [ProjectAccordion.jsx](C:\Users\JIREH\app\project-dashboard\client\src\components\ProjectAccordion.jsx) so the expanded detail card also shows `URL(Admin)` and the wider table layout stays aligned.
+
+### Success
+- A project can now store both a public `URL` and a separate `URL(Admin)`.
+- The new admin URL survives refresh because both the frontend and backend understand the field.
+- The table layout still aligns correctly after adding the new column.
+
+### Next
+- Verify the frontend build and server syntax checks after the new field addition.
+
+## Phase 16 - Verification And Handoff Refresh
+- Verified frontend production build with:
+  - `npm.cmd run build`
+- Verified server syntax with:
+  - `node --check app.js`
+  - `node --check routes\\projects.js`
+  - `node --check lib\\dataStore.js`
+- Rewrote [FORCodex.md](C:\Users\JIREH\app\project-dashboard\FORCodex.md) so it now explains the current project structure and the new `URL(Admin)` field in plain Korean.
+
+### Success
+- Frontend build passes after the new column and form field were added.
+- The backend files touched by this change pass syntax validation.
+- The handoff document now matches the current saved project shape.
+
+### Next
+- If you later want stricter data quality, add URL format validation for `URL` and `URL(Admin)`.

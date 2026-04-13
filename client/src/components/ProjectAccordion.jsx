@@ -7,7 +7,7 @@ function ProjectAccordion({ project, isOpen }) {
 
   return (
     <tr className="border-b border-slate-200 dark:border-dark-border">
-      <td colSpan={6} className="p-0">
+      <td colSpan={7} className="p-0">
         <div
           className={`overflow-hidden transition-all duration-300 ${
             isOpen ? 'max-h-[420px] opacity-100' : 'max-h-0 opacity-0'
@@ -39,6 +39,24 @@ function ProjectAccordion({ project, isOpen }) {
                     className="mt-2 inline-block break-all text-sm text-blue-600 underline decoration-transparent transition hover:decoration-current dark:text-blue-300"
                   >
                     {project.url}
+                  </a>
+                ) : (
+                  <p className="mt-2 text-sm text-slate-700 dark:text-dark-text">Not set</p>
+                )}
+              </div>
+
+              <div className="rounded-2xl bg-white/90 p-4 shadow-sm dark:bg-slate-900/70">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
+                  URL(Admin)
+                </p>
+                {project.adminUrl ? (
+                  <a
+                    href={project.adminUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-2 inline-block break-all text-sm text-blue-600 underline decoration-transparent transition hover:decoration-current dark:text-blue-300"
+                  >
+                    {project.adminUrl}
                   </a>
                 ) : (
                   <p className="mt-2 text-sm text-slate-700 dark:text-dark-text">Not set</p>

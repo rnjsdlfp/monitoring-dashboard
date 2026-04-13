@@ -112,6 +112,7 @@ function ProjectsPage() {
                   <th className="w-64 px-3 py-4">Project Name</th>
                   <th className="w-56 px-3 py-4">Server Location</th>
                   <th className="px-3 py-4">URL</th>
+                  <th className="px-3 py-4">URL(Admin)</th>
                   <th className="w-14 px-3 py-4 text-center">Edit</th>
                   <th className="w-14 px-3 py-4 text-center">Delete</th>
                 </tr>
@@ -120,7 +121,7 @@ function ProjectsPage() {
                 {loading ? (
                   <tr>
                     <td
-                      colSpan={6}
+                      colSpan={7}
                       className="px-6 py-10 text-center text-sm text-slate-500 dark:text-dark-muted"
                     >
                       프로젝트 목록을 불러오는 중입니다...
@@ -131,7 +132,7 @@ function ProjectsPage() {
                 {!loading && !projects.length ? (
                   <tr>
                     <td
-                      colSpan={6}
+                      colSpan={7}
                       className="px-6 py-10 text-center text-sm text-slate-500 dark:text-dark-muted"
                     >
                       아직 등록된 프로젝트가 없습니다.

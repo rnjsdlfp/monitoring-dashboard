@@ -24,6 +24,7 @@ function sanitizeProject(project = {}, index = 0) {
     outputFormat: project.outputFormat || '',
     serverLocation: project.serverLocation || '',
     url: project.url || '',
+    adminUrl: project.adminUrl || '',
     techStack: Array.isArray(project.techStack) ? project.techStack : [],
     createdAt: project.createdAt || ''
   };
