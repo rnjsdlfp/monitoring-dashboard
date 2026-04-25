@@ -102,3 +102,45 @@
 
 ### Next
 - If you later want stricter data quality, add URL format validation for `URL` and `URL(Admin)`.
+
+## Phase 17 - Project CRUD Completion And Drag Ordering
+- Added a dedicated reorder endpoint in [server/routes/projects.js](C:\Users\JIREH\app\project-dashboard\server\routes\projects.js) so the saved project order can be persisted instead of changing only in the browser.
+- Updated [client/src/pages/ProjectsPage.jsx](C:\Users\JIREH\app\project-dashboard\client\src\pages\ProjectsPage.jsx) to:
+  - keep the existing saved project CRUD flow
+  - manage drag state
+  - move rows optimistically in the UI
+  - save the new order through the API
+- Updated [client/src/components/ProjectRow.jsx](C:\Users\JIREH\app\project-dashboard\client\src\components\ProjectRow.jsx) to add:
+  - a drag handle
+  - drop target highlighting
+  - dragged row styling
+
+### Success
+- Saved projects can now be reordered with mouse drag and drop.
+- The changed order is written back to the server so it survives refresh.
+- Existing add, edit, read, and delete flows remain available on the same screen.
+
+### Next
+- Run frontend build and backend syntax checks.
+- Refresh [FORCodex.md](C:\Users\JIREH\app\project-dashboard\FORCodex.md) so it explains the new ordering flow in plain language.
+
+## Phase 18 - Verification And Handoff Update For Drag Ordering
+- Verified frontend production build with:
+  - `npm.cmd run build`
+- Verified backend syntax with:
+  - `node --check routes\\projects.js`
+  - `node --check lib\\dataStore.js`
+- Rewrote [FORCodex.md](C:\Users\JIREH\app\project-dashboard\FORCodex.md) so it now explains:
+  - the completed Projects CRUD flow
+  - the drag and drop ordering flow
+  - why the reorder API exists
+  - lessons and future pitfalls in plain language
+
+### Success
+- The client build passes after adding drag-and-drop ordering.
+- The backend files touched by this change pass syntax validation.
+- The handoff document now matches the current behavior of the Projects screen.
+
+### Next
+- If needed later, add field validation for blank project names and invalid URLs.
+- If mobile ordering becomes important, consider adding a touch-friendly reorder UI in addition to desktop drag and drop.

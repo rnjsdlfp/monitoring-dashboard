@@ -35,6 +35,33 @@ router.post('/', (req, res) => {
   res.status(201).json(project);
 });
 
+router.put('/reorder', (req, res) => {
+  const projects = readProjects();
+  const orderedIds = Array.isArray(req.body?.orderedIds) ? req.body.orderedIds : null;
+
+  if (!orderedIds) {
+    return res.status(400).json({ error: 'orderedIds must be an array' });
+  }
+
+  if (orderedIds.length !== projects.length) {
+    return res.status(400).json({ error: 'orderedIds length mismatch' });
+  }
+
+  if (new Set(orderedIds).size !== orderedIds.length) {
+    return res.status(400).json({ error: 'orderedIds must be unique' });
+  }
+
+  const projectMap = new Map(projects.map((project) => [project.id, project]));
+  const reorderedProjects = orderedIds.map((id) => projectMap.get(id)).filter(Boolean);
+
+  if (reorderedProjects.length !== projects.length) {
+    return res.status(400).json({ error: 'orderedIds contains unknown project id' });
+  }
+
+  writeProjects(reorderedProjects);
+  return res.json(readProjects());
+});
+
 router.put('/:id', (req, res) => {
   const projects = readProjects();
   const index = projects.findIndex((project) => project.id === req.params.id);
