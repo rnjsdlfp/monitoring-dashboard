@@ -18,6 +18,7 @@ server/data/eventLog.json
 
 # Generated artifacts
 .playwright-cli/
+.wrangler/
 *.log
 
 # OS files

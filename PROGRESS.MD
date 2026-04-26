@@ -144,3 +144,47 @@
 ### Next
 - If needed later, add field validation for blank project names and invalid URLs.
 - If mobile ordering becomes important, consider adding a touch-friendly reorder UI in addition to desktop drag and drop.
+
+## Phase 19 - Cloudflare Pages And Functions Migration Setup
+- Added [client/public/_redirects](C:\Users\JIREH\app\project-dashboard\client\public\_redirects) so React routes can fall back to `index.html` on Cloudflare Pages.
+- Added [wrangler.toml](C:\Users\JIREH\app\project-dashboard\wrangler.toml) with a Pages build output path and a placeholder D1 binding.
+- Added [schema.sql](C:\Users\JIREH\app\project-dashboard\schema.sql) to define the Cloudflare D1 tables needed for:
+  - saved projects
+  - persisted settings
+- Added Cloudflare Pages Functions under [functions](C:\Users\JIREH\app\project-dashboard\functions) to replace the Express API path when deployed on Cloudflare:
+  - `GET/POST /api/projects`
+  - `PUT /api/projects/reorder`
+  - `PUT/DELETE /api/projects/:id`
+  - `GET/PUT /api/settings`
+  - `POST /api/settings/test-telegram`
+- Kept the existing `server/` folder so the previous non-Cloudflare deployment path still exists.
+
+### Success
+- The repository now contains a Cloudflare-native API path instead of relying only on the old Express server.
+- The app no longer depends on writable JSON files when deployed to Cloudflare.
+- React SPA routing has an explicit Pages fallback rule.
+
+### Next
+- Verify the client build and confirm `_redirects` is included in `client/dist`.
+- Document the exact Cloudflare Pages and D1 setup steps for redeployment.
+
+## Phase 20 - Cloudflare Verification And Handoff
+- Verified frontend production build with:
+  - `npm.cmd run build`
+- Verified Cloudflare Functions module loading with:
+  - `node --input-type=module -e "await import(...)"` for the new Functions entry files
+- Confirmed [client/dist/_redirects](C:\Users\JIREH\app\project-dashboard\client\dist\_redirects) exists after build.
+- Rewrote [FORCodex.md](C:\Users\JIREH\app\project-dashboard\FORCodex.md) to explain:
+  - why the blank Cloudflare deploy likely happened
+  - why the old JSON file storage model does not fit Cloudflare well
+  - how Pages, Functions, and D1 fit together in this project
+  - the exact setup sequence needed in Cloudflare
+
+### Success
+- The client build still passes after adding Cloudflare deployment files.
+- The new Functions files parse as modules.
+- The handoff document now includes a practical Cloudflare deployment explanation instead of only the previous VM/server model.
+
+### Next
+- Replace the placeholder D1 database ID in `wrangler.toml` after creating the real database.
+- Add the D1 binding named `DB` in the Cloudflare Pages dashboard before testing production API routes.
