@@ -5,4 +5,4 @@ pages_build_output_dir = "client/dist"
 [[d1_databases]]
 binding = "DB"
 database_name = "project-dashboard"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
+database_id = "c3ffa46a-16d6-44b4-be04-f6d85ec8fcff"
